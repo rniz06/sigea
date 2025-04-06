@@ -38,7 +38,7 @@
     </div>
 
     <strong>
-        <a href="{{ config('app.company_url', '#') }}">
+        <a href="{{ config('app.company_url', '#') }}" class="text-muted">
             {{ env('APP_NAME', 'My company') }}
         </a>
     </strong>
