@@ -45,4 +45,47 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Se implementa funcion para buscador general.
+     */
+    public function scopeBuscador($query, $value)
+    {
+        $query->where('name', 'like', "%{$value}%")
+        ->orWhere('email', 'like', "%{$value}%")
+        ->orWhere('username', 'like', "%{$value}%")
+        ->orWhere('created_at', 'like', "%{$value}%");
+    }
+
+    /**
+     * Se implementa funcion para buscador general.
+     */
+    public function scopeBuscadorName($query, $value)
+    {
+        $query->where('name', 'like', "%{$value}%");
+    }
+
+    /**
+     * Se implementa funcion para buscador general.
+     */
+    public function scopeBuscadorEmail($query, $value)
+    {
+        $query->where('email', 'like', "%{$value}%");
+    }
+
+    /**
+     * Se implementa funcion para buscador general.
+     */
+    public function scopeBuscadorUsername($query, $value)
+    {
+        $query->where('username', 'like', "%{$value}%");
+    }
+
+    /**
+     * Se implementa funcion para buscador general.
+     */
+    public function scopeBuscadorCreatedat($query, $value)
+    {
+        $query->where('created_at', 'like', "%{$value}%");
+    }
 }

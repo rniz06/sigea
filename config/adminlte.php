@@ -329,6 +329,16 @@ return [
         ],
         ['header' => 'account_settings'],
         [
+            'text' => 'Admin',
+            'icon' => 'fas fa-users-cog',
+            'submenu' => [
+                [
+                    'text' => 'Usuarios',
+                    'route' => 'usuarios.index',
+                ],                
+            ],
+        ],
+        [
             'text' => 'profile',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-user',
