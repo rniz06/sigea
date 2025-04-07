@@ -23,7 +23,7 @@
                     <th style="width: 10px">#</th>
                     <th>Nombre Completo:</th>
                     <th>Email:</th>
-                    <th>Nickname:</th>
+                    <th>Username:</th>
                     <th>Creado el:</th>
                     <th style="width: 40px">Acciones</th>
                 </tr>
