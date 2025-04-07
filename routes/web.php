@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\InicioController;
+use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,5 +32,20 @@ Route::middleware('auth')->group(function () {
         Route::get('usuarios/{usuario}/edit', 'edit')->name('usuarios.edit');
         Route::put('usuarios/{usuario}', 'update')->name('usuarios.update');
         Route::delete('usuarios/{usuario}', 'destroy')->name('usuarios.destroy');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Modulo Roles
+    |--------------------------------------------------------------------------
+    */
+    Route::controller(RolController::class)->group(function () {
+        Route::get('roles', 'index')->name('roles.index');
+        Route::get('roles/create', 'create')->name('roles.create');
+        Route::post('roles/store', 'store')->name('roles.store');
+        Route::get('roles/{role}', 'show')->name('roles.show');
+        Route::get('roles/{role}/edit', 'edit')->name('roles.edit');
+        Route::put('roles/{role}', 'update')->name('roles.update');
+        Route::delete('roles/{role}', 'destroy')->name('roles.destroy');
     });
 });

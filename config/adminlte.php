@@ -335,6 +335,12 @@ return [
                 [
                     'text' => 'Usuarios',
                     'route' => 'usuarios.index',
+                    'can' => 'Usuarios Listar',
+                ],
+                [
+                    'text' => 'Roles',
+                    'route' => 'roles.index',
+                    'can' => 'Roles Listar',
                 ],                
             ],
         ],
