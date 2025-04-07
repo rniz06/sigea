@@ -47,9 +47,9 @@
                             <x-dropdown>
                                 <x-slot name="edit">{{ route('usuarios.edit', $usuario->id) }}</x-slot>
 
-                                {{-- @if (auth()->user()->can('Usuarios Eliminar'))
-                                    <x-slot name="action">{{ route('usuarios.destroy', $usuario->id_usuario) }}</x-slot>
-                                @endif --}}
+                                @if (auth()->user()->can('Usuarios Eliminar'))
+                                    <x-slot name="action">{{ route('usuarios.destroy', $usuario->id) }}</x-slot>
+                                @endif
                             </x-dropdown>
                         </td>
                     </tr>

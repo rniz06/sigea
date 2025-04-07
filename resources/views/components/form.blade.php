@@ -1,4 +1,4 @@
-<div class="card card-success">
+<div class="card card-{{ $color ?? 'success' }} {{ $class ?? '' }}">
     <div class="card-header">
         <h3 class="card-title"> {{ $title ?? 'Registrar' }} </h3>
     </div>

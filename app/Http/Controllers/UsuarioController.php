@@ -6,6 +6,8 @@ use App\Http\Requests\Usuario\StoreUsuarioRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
@@ -42,5 +44,44 @@ class UsuarioController extends Controller
         $usuario->assignRole($request->input('roles'));
 
         return redirect()->route('usuarios.index')->with('success', 'Usuario Creado exitosamente.');
+    }
+
+    public function edit(User $usuario)
+    {
+        $roles = Role::pluck('name', 'name')->all();
+        $userRole = $usuario->roles->pluck('name', 'name')->all();
+        return view('usuarios.edit', compact('usuario', 'roles', 'userRole'));
+    }
+
+    public function update(Request $request, User $usuario)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'username' => 'required|max:191|unique:users,username,' . $usuario->id,
+            'email' => 'nullable|email|unique:users,email,' . $usuario->id,
+            //'roles' => 'required',
+        ]);
+
+        $input = $request->all();
+        if (!empty($input['password'])) {
+            $input['password'] = Hash::make($input['password']);
+        } else {
+            $input = Arr::except($input, array('password'));
+        }
+
+        $usuario->update($input);
+        DB::table('model_has_roles')->where('model_id', $usuario->id)->delete();
+
+        $usuario->assignRole($request->input('roles'));
+
+        return redirect()->route('usuarios.index')
+            ->with('success', 'Usuario actualizado con éxito');
+    }
+
+    public function destroy(User $usuario)
+    {
+        $usuario->delete();
+        return redirect()->route('usuarios.index')
+            ->with('success', 'Usuario eliminado exitosamente');
     }
 }
