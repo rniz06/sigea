@@ -12,15 +12,15 @@
     <div>
 
         @if (count($errors) > 0)
-        <div class="alert alert-danger">
-            <strong>¡Vaya!</strong> Hubo algunos problemas con su entrada.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+            <div class="alert alert-danger">
+                <strong>¡Vaya!</strong> Hubo algunos problemas con su entrada.<br><br>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <x-form title="Registrar Usuario" method="POST" action="{{ route('usuarios.store') }}">
 
@@ -32,6 +32,15 @@
 
             <x-input label="Contraseña" type="password" name="password" placeholder="Contraseña..." />
 
+            <x-select label="Rol" name="roles[]" id="roles" multiple>
+                <option>Seleccionar...</option>
+                @foreach ($roles as $value => $label)
+                    <option value="{{ $value }}" {{ isset($userRole[$value]) ? 'selected' : '' }}>
+                        {{ $label }}
+                    </option>
+                @endforeach
+            </x-select>
+
             <x-slot name="buttons">
                 <x-button type="submit">Guardar</x-button>
                 <x-button-back href="{{ route('usuarios.index') }}">Cancelar</x-button-back>
@@ -41,15 +50,29 @@
     </div>
 @stop
 
+@section('plugins.Select2', true)
+
 {{-- Push extra CSS --}}
 
 @push('css')
-    {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+    <style>
+        /* Corrige estilos del select2 */
+        .selection span {
+            height: 38px !important;
+        }
+    </style>
 @endpush
 
 {{-- Push extra scripts --}}
 
 @push('js')
-    {{-- <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script> --}}
+    <script>
+        $(document).ready(function() {
+            $('#roles').select2({
+                placeholder: 'Seleccionar...',
+                language: "es",
+
+            });
+        });
+    </script>
 @endpush

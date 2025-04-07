@@ -35,6 +35,13 @@
                         <td>{{ $usuario->name ?? 'N/A' }}</td>
                         <td>{{ $usuario->email ?? 'N/A' }}</td>
                         <td>{{ $usuario->username ?? 'N/A' }}</td>
+                        <td>
+                            @if (!empty($usuario->getRoleNames()))
+                                @foreach ($usuario->getRoleNames() as $v)
+                                    <label class="badge badge-secondary text-light">{{ $v }}</label>
+                                @endforeach
+                            @endif
+                        </td>
                         <td> {{ date('d/m/Y', strtotime($usuario->created_at ?? 'N/A')) }} </td>
                         <td>
                             <x-dropdown>

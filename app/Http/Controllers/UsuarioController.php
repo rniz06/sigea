@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Usuario\StoreUsuarioRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -24,7 +25,9 @@ class UsuarioController extends Controller
 
     public function create()
     {
-        return view('usuarios.create');
+        $roles = Role::pluck('name', 'name')->all();
+
+        return view('usuarios.create', compact('roles'));
     }
 
     public function store(StoreUsuarioRequest $request)
@@ -36,7 +39,7 @@ class UsuarioController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        //$usuario->assignRole($request->input('roles'));
+        $usuario->assignRole($request->input('roles'));
 
         return redirect()->route('usuarios.index')->with('success', 'Usuario Creado exitosamente.');
     }
