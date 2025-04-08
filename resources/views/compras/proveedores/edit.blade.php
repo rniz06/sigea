@@ -2,8 +2,8 @@
 
 {{-- Customize layout sections --}}
 
-@section('subtitle', 'Usuarios')
-@section('content_header_title', 'Usuarios')
+@section('subtitle', 'Proveedores')
+@section('content_header_title', 'Proveedores')
 @section('content_header_subtitle', 'Editar')
 
 {{-- Content body: main page content --}}
@@ -22,30 +22,38 @@
             </div>
         @endif
 
-        <x-form title="Registrar Usuario" color="warning" method="POST" action="{{ route('usuarios.update', $usuario->id) }}">
+        <x-form title="Actualizar Proveedor" color="warning" method="POST"
+            action="{{ route('proveedores.update', $proveedor->id) }}">
 
             @method('PUT')
 
-            <x-input label="Nombre" type="text" name="name" placeholder="Nombre del Usuario..." value="{{ $usuario->name }}" />
+            <x-input label="Razón Social" type="text" name="prov_razonsocial" placeholder="Razón Social..."
+                value="{{ $proveedor->prov_razonsocial }}" />
 
-            <x-input label="Email" type="text" name="email" placeholder="Email..." value="{{ $usuario->email }}" />
+            <x-input label="Ruc" type="text" name="prov_ruc" placeholder="Ruc..."
+                value="{{ $proveedor->prov_ruc }}" />
 
-            <x-input label="Username" type="text" name="username" placeholder="Username..." value="{{ $usuario->username }}" />
+            <x-input label="Correo" type="email" name="prov_correo" placeholder="Correo..."
+                value="{{ $proveedor->prov_correo }}" />
 
-            <x-input label="Contraseña" type="password" name="password" placeholder="Contraseña..." />
+            <x-input label="Dirección" type="text" name="prov_direccion" placeholder="Dirección..."
+                value="{{ $proveedor->prov_direccion }}" />
 
-            <x-select label="Rol" name="roles[]" id="roles" multiple>
+            <x-input label="Teléfono" type="text" name="prov_telefono" placeholder="Teléfono..."
+                value="{{ $proveedor->prov_telefono }}" />
+
+            <x-select label="Ciudad" name="ciudad_id" id="ciudad">
                 <option>Seleccionar...</option>
-                @foreach ($roles as $value => $label)
-                    <option value="{{ $value }}" {{ isset($userRole[$value]) ? 'selected' : '' }}>
-                        {{ $label }}
+                @foreach ($ciudades as $ciudad)
+                    <option value="{{ $ciudad->id }}" {{ $ciudad->id == $proveedor->ciudad_id ? 'selected' : '' }}>
+                        {{ $ciudad->ciu_descripcion ?? 'N/A' }}
                     </option>
                 @endforeach
             </x-select>
 
             <x-slot name="buttons">
                 <x-button type="submit" color="warning">Guardar</x-button>
-                <x-button-back href="{{ route('usuarios.index') }}">Cancelar</x-button-back>
+                <x-button-back href="{{ route('proveedores.index') }}">Cancelar</x-button-back>
             </x-slot>
 
         </x-form>
@@ -70,7 +78,7 @@
 @push('js')
     <script>
         $(document).ready(function() {
-            $('#roles').select2({
+            $('#ciudad').select2({
                 placeholder: 'Seleccionar...',
                 language: "es",
 

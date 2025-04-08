@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Compras;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Compras\Proveedor\StoreProveedorRequest;
+use App\Http\Requests\Compras\Proveedor\UpdateProveedorRequest;
 use App\Models\Ciudad;
 use App\Models\Compras\Proveedor;
 use Illuminate\Http\Request;
@@ -57,15 +58,26 @@ class ProveedorController extends Controller
      */
     public function edit(Proveedor $proveedor)
     {
-        //
+        $ciudades = Ciudad::select('id', 'ciu_descripcion')->get();
+        $proveedor->load('ciudad');
+        return view('compras.proveedores.edit', compact('proveedor', 'ciudades'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Proveedor $proveedor)
+    public function update(UpdateProveedorRequest $request, Proveedor $proveedor)
     {
-        //
+        $proveedor->update([
+            'prov_razonsocial' => $request->prov_razonsocial,
+            'prov_ruc' => $request->prov_ruc,
+            'prov_correo' => $request->prov_correo,
+            'prov_direccion' => $request->prov_direccion,
+            'prov_telefono' => $request->prov_telefono,
+            'ciudad_id' => $request->ciudad_id,
+        ]);
+
+        return redirect()->route('proveedores.index')->with('success', 'Proveedor Actualizado Correctamente');
     }
 
     /**
@@ -73,6 +85,7 @@ class ProveedorController extends Controller
      */
     public function destroy(Proveedor $proveedor)
     {
-        //
+        $proveedor->delete();
+        return redirect()->route('proveedores.index')->with('success', 'Proveedor Eliminado Correctamente');
     }
 }

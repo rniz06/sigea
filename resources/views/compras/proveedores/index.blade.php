@@ -17,7 +17,7 @@
         </div>
     @endif
 
-    {{-- @livewire('usuarios.tabla') --}}
+    @livewire('compras.proveedores.tabla')
 
 @stop
 
