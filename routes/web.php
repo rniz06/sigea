@@ -6,6 +6,9 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
+// Incluir las rutas de compras
+require __DIR__ . '/compras.php';
+
 Route::get('/', function () {
     return view('welcome');
 });

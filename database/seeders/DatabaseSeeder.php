@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UsuarioRolPermisoSeeder::class,
+            PaisSeeder::class,
+            CiudadSeeder::class
         ]);
     }
 }
