@@ -13,6 +13,7 @@ Route::middleware('auth')->group(function () {
     */
     Route::controller(ProveedorController::class)->group(function () {
         Route::get('proveedores', 'index')->name('proveedores.index');
+        Route::get('/ajax/proveedores', 'getProveedores')->name('proveedores.ajax');
         Route::get('proveedores/create', 'create')->name('proveedores.create');
         Route::post('proveedores/store', 'store')->name('proveedores.store');
         Route::get('proveedores/{proveedor}', 'show')->name('proveedores.show');

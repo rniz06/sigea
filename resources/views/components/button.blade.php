@@ -1,3 +1,3 @@
-<button type="{{ $type ?? 'button' }}" class="btn btn-{{ $color ?? 'success' }} {{ $class ?? '' }}">
+<button type="{{ $type ?? 'button' }}" class="btn btn-sm btn-{{ $color ?? 'success' }} {{ $class ?? '' }}">
     <i class="{{ $icon ?? 'fas fa-save' }}"></i> {{ $slot }}
 </button>
