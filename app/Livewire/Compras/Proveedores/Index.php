@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Compras\Proveedores;
 
+use Livewire\Attributes\Validate;
 use App\Models\Ciudad;
 use App\Models\Compras\Proveedor;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -14,11 +16,24 @@ class Index extends Component
 
     // Variables para el formulario
     public $proveedor_id;
+    #[Validate]
     public $prov_razonsocial, $prov_ruc, $prov_direccion, $prov_telefono, $prov_correo, $ciudad_id;
 
     public $modo = 'inicio'; // inicio, agregar, modificar, seleccionado
     public $buscador = '';
     public $paginado = 5;
+
+    protected function rules()
+    {
+        return [
+            'prov_razonsocial' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
+            'prov_ruc' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
+            'prov_direccion' => 'required',
+            'prov_telefono' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
+            'prov_correo' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
+            'ciudad_id' => 'required',
+        ];
+    }
 
     // Iniciar creación de nuevo registro
     public function agregar()
@@ -73,31 +88,14 @@ class Index extends Component
 
     public function grabar()
     {
-        $this->validate([
-            'prov_razonsocial' => 'required|string',
-            'prov_ruc' => 'required',
-            // Agregar más validaciones según tu lógica
-        ]);
+        // Validar los datos
+        $validados = $this->validate();
 
         if ($this->modo === 'agregar') {
-            Proveedor::create([
-                'prov_razonsocial' => $this->prov_razonsocial,
-                'prov_ruc' => $this->prov_ruc,
-                'prov_direccion' => $this->prov_direccion,
-                'prov_telefono' => $this->prov_telefono,
-                'prov_correo' => $this->prov_correo,
-                'ciudad_id' => $this->ciudad_id,
-            ]);
+            Proveedor::create($validados);
         } elseif ($this->modo === 'modificar' && $this->proveedor_id) {
             $proveedor = Proveedor::find($this->proveedor_id);
-            $proveedor->update([
-                'prov_razonsocial' => $this->prov_razonsocial,
-                'prov_ruc' => $this->prov_ruc,
-                'prov_direccion' => $this->prov_direccion,
-                'prov_telefono' => $this->prov_telefono,
-                'prov_correo' => $this->prov_correo,
-                'ciudad_id' => $this->ciudad_id,
-            ]);
+            $proveedor->update($validados);
         }
 
         $this->resetearForm();
