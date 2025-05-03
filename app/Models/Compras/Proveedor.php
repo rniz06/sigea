@@ -37,7 +37,10 @@ class Proveedor extends Model
         ->orWhere('prov_direccion', 'like', "%{$value}%")
         ->orWhere('prov_telefono', 'like', "%{$value}%")
         ->orWhere('prov_correo', 'like', "%{$value}%")
-        ->orWhere('ciudad_id', 'like', "%{$value}%");
+        // Buscar en la tabla ciudad a través de la relación
+        ->orWhereHas('ciudad', function ($query) use ($value) {
+            $query->where('ciu_descripcion', 'like', "%{$value}%");
+        });
     }
 
     public function scopeBuscadorRazonsocial($query, $value)

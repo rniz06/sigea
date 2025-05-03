@@ -22,7 +22,7 @@
             <x-button type="button" icon="fas fa-plus" color="success" click="agregar"
             :disabled="in_array($modo, ['agregar', 'modificar', 'seleccionado'])">Agregar</x-button>
 
-            <x-button type="button" icon="fas fa-edit" color="primary" click="editar({{ $proveedor_id }})" :disabled="in_array($modo, ['inicio', 'modificar', 'agregar'])">Modificar</x-button>
+            <x-button type="button" icon="fas fa-edit" color="primary" click="editar" :disabled="in_array($modo, ['inicio', 'modificar', 'agregar'])">Modificar</x-button>
 
             <x-button type="button" icon="fas fa-trash" color="danger" click="confirmarEliminacion"
                 :disabled="in_array($modo, ['agregar', 'modificar', 'inicio'])">Eliminar</x-button>

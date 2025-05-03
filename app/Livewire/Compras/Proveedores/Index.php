@@ -11,37 +11,27 @@ use Livewire\WithPagination;
 
 class Index extends Component
 {
+    // Usar el trait WithPagination para la paginación
     use WithPagination;
-    protected $paginationTheme = 'bootstrap';
 
     // Variables para el formulario
     public $proveedor_id;
     #[Validate]
     public $prov_razonsocial, $prov_ruc, $prov_direccion, $prov_telefono, $prov_correo, $ciudad_id;
 
+    // Variables para la paginación, busqueda y estado(modo) del formulario
     public $modo = 'inicio'; // inicio, agregar, modificar, seleccionado
     public $buscador = '';
     public $paginado = 5;
 
-    protected function rules()
-    {
-        return [
-            'prov_razonsocial' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
-            'prov_ruc' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
-            'prov_direccion' => 'required',
-            'prov_telefono' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
-            'prov_correo' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
-            'ciudad_id' => 'required',
-        ];
-    }
-
-    // Iniciar creación de nuevo registro
+    // Habilita el formulario para agregar un registro
     public function agregar()
     {
         $this->resetearForm();
         $this->modo = 'agregar';
     }
 
+    // Habilita los botones de editar, eliminar y cancelar
     public function seleccionado($id)
     {
         $proveedor = Proveedor::findOrFail($id);
@@ -55,24 +45,19 @@ class Index extends Component
         $this->modo = 'seleccionado';
     }
 
-    public function editar($id)
+    // Habilita el formulario para editar un registro (La información ya esta cargada por el metodo "seleccionado()")
+    public function editar()
     {
-        $proveedor = Proveedor::findOrFail($id);
-        $this->proveedor_id = $proveedor->id;
-        $this->prov_razonsocial = $proveedor->prov_razonsocial;
-        $this->prov_ruc = $proveedor->prov_ruc;
-        $this->prov_direccion = $proveedor->prov_direccion;
-        $this->prov_telefono = $proveedor->prov_telefono;
-        $this->prov_correo = $proveedor->prov_correo;
-        $this->ciudad_id = $proveedor->ciudad_id;
         $this->modo = 'modificar';
     }
 
+    // Deshabilita el formulario y borra los datos ingresados o seleccionados
     public function cancelar()
     {
         $this->resetearForm();
     }
 
+    // Elimina el registro que obtuvimos con el metodo "seleccionado()"
     public function eliminar()
     {
         if ($this->proveedor_id) {
@@ -86,22 +71,34 @@ class Index extends Component
         $this->dispatchBrowserEvent('confirmar-eliminacion');
     }
 
+    // Reglas de validación
+    protected function rules()
+    {
+        return [
+            'prov_razonsocial' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
+            'prov_ruc' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
+            'prov_direccion' => 'required',
+            'prov_telefono' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
+            'prov_correo' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
+            'ciudad_id' => 'required',
+        ];
+    }
+
     public function grabar()
     {
         // Validar los datos
         $validados = $this->validate();
-
+        
         if ($this->modo === 'agregar') {
             Proveedor::create($validados);
         } elseif ($this->modo === 'modificar' && $this->proveedor_id) {
-            $proveedor = Proveedor::find($this->proveedor_id);
-            $proveedor->update($validados);
+            Proveedor::findOrFail($this->proveedor_id)->update($validados);
         }
 
         $this->resetearForm();
     }
 
-    // Restablecer formulario
+    // Restablecer formulario a deshabilitado y limpiar datos ingresados o seleccionados
     private function resetearForm()
     {
         $this->proveedor_id = null;
@@ -114,6 +111,7 @@ class Index extends Component
         $this->modo = 'inicio';
     }
 
+    // Limpiar el buscador y la paginación al cambiar de pagina
     public function updating($key): void
     {
         if ($key === 'buscador' || $key === 'paginado') {
