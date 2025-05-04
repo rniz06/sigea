@@ -66,11 +66,6 @@ class Index extends Component
         }
     }
 
-    public function confirmarEliminacion()
-    {
-        $this->dispatch('confirmar-eliminacion');
-    }
-
     // Reglas de validación
     protected function rules()
     {
@@ -82,6 +77,11 @@ class Index extends Component
             'prov_correo' => ['required', Rule::unique('proveedores')->ignore($this->proveedor_id)],
             'ciudad_id' => 'required',
         ];
+    }
+
+    public function modometodo()
+    {
+        $this->emit('modometodo', $this->modo);
     }
 
     public function grabar()

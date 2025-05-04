@@ -28,13 +28,13 @@
             <x-button type="button" icon="fas fa-trash" color="danger" id="btn-eliminar"
                 :disabled="in_array($modo, ['agregar', 'modificar', 'inicio'])">Eliminar</x-button>
 
-            <x-button type="submit" color="default" click="grabar" :disabled="in_array($modo, ['inicio', 'seleccionado'])">Grabar</x-button>
+            <x-button type="submit" color="default" :disabled="in_array($modo, ['inicio', 'seleccionado'])" id="btn-grabar">Grabar</x-button>
 
             <x-button type="button" icon="fas fa-window-close" color="warning" click="cancelar"
                 :disabled="in_array($modo, ['inicio'])">Cancelar</x-button>
         </x-slot>
     </x-card-form>
-
+    
     <!-- Tabla -->
     <x-tabla titulo="Listado de Proveedores">
         <x-slot name="cabeceras">
@@ -64,13 +64,51 @@
 </div>
 
 @push('scripts')
+    {{-- Script para boton guardar --}}    
+    <script>                 
+        const btnGuardar = document.getElementById('btn-grabar');         
+        if (btnGuardar) {             
+            btnGuardar.addEventListener('click', function() {
+                // Obtener el modo actual directamente de Livewire                 
+                const modoActual = @this.get('modo');
+                
+                let titulo = modoActual === 'modificar' ? 'MODIFICAR' : 'AGREGAR';                 
+                let mensaje = modoActual === 'modificar' ? '¿DESEAS ACTUALIZAR EL REGISTRO?' :                     
+                    '¿DESEAS GRABAR EL NUEVO REGISTRO?';                 
+                let respuesta = modoActual === 'modificar' ? 'Registro Actualizado Con Éxito' :                     
+                    'Registro Creado Con Éxito';                  
+                
+                Swal.fire({                     
+                    title: titulo,                     
+                    text: mensaje,                     
+                    icon: "warning",                     
+                    showCancelButton: true,                     
+                    confirmButtonColor: "#458E49",                     
+                    confirmButtonText: "SI",                     
+                    cancelButtonText: "NO",                     
+                    closeOnConfirm: false                 
+                }).then((result) => {                     
+                    if (result.isConfirmed) {                         
+                        @this.grabar();                         
+                        Swal.fire({                             
+                            title: "Respuesta",                             
+                            text: respuesta,                             
+                            icon: "success"                         
+                        });                     
+                    }                 
+                });             
+            });         
+        }     
+    </script>
+
+    {{-- Script para boton eliminar --}}
     <script>
         const btnEliminar = document.getElementById('btn-eliminar');
         if (btnEliminar) {
             btnEliminar.addEventListener('click', function() {
                 Swal.fire({
                     title: "ELIMINAR",
-                    text: "¿DESEAS ELININAR EL REGISTRO SELECCIONADO?",
+                    text: "¿DESEAS ELIMINAR EL REGISTRO SELECCIONADO?",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#458E49",
@@ -90,7 +128,7 @@
             });
         }
     </script>
-    <!-- Page specific script -->
+    <!-- Script para select2 -->
     <script>
         $(document).ready(function() {
             $('#ciudad').select2({
