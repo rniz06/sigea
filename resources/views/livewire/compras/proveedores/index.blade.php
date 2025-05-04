@@ -1,17 +1,17 @@
 <div>
     <!-- Formulario -->
     <x-card-form>
-        <x-card-input label="Razón Social" placeholder="Razón Social..." campo="prov_razonsocial" :disabled="in_array($modo, ['inicio','seleccionado'])" />
+        <x-card-input label="Razón Social" placeholder="Razón Social..." campo="prov_razonsocial" :disabled="in_array($modo, ['inicio', 'seleccionado'])" />
 
-        <x-card-input label="Ruc" placeholder="Ruc..." campo="prov_ruc" :disabled="in_array($modo, ['inicio','seleccionado'])" />
+        <x-card-input label="Ruc" placeholder="Ruc..." campo="prov_ruc" :disabled="in_array($modo, ['inicio', 'seleccionado'])" />
 
-        <x-card-input label="Dirección" placeholder="Dirección..." campo="prov_direccion" :disabled="in_array($modo, ['inicio','seleccionado'])" />
+        <x-card-input label="Dirección" placeholder="Dirección..." campo="prov_direccion" :disabled="in_array($modo, ['inicio', 'seleccionado'])" />
 
-        <x-card-input label="Teléfono" placeholder="Teléfono..." campo="prov_telefono" :disabled="in_array($modo, ['inicio','seleccionado'])" />
+        <x-card-input label="Teléfono" placeholder="Teléfono..." campo="prov_telefono" :disabled="in_array($modo, ['inicio', 'seleccionado'])" />
 
-        <x-card-input label="Correo" placeholder="Correo..." campo="prov_correo" :disabled="in_array($modo, ['inicio','seleccionado'])" />
+        <x-card-input label="Correo" placeholder="Correo..." campo="prov_correo" :disabled="in_array($modo, ['inicio', 'seleccionado'])" />
 
-        <x-select id="ciudad" label="Ciudad" campo="ciudad_id" :disabled="in_array($modo, ['inicio','seleccionado'])">
+        <x-select id="ciudad" label="Ciudad" campo="ciudad_id" :disabled="in_array($modo, ['inicio', 'seleccionado'])">
             <option value="">Seleccione una ciudad</option>
             @foreach ($ciudades as $ciudad)
                 <option value="{{ $ciudad->id }}">{{ $ciudad->ciu_descripcion ?? 'N/A' }}</option>
@@ -20,11 +20,12 @@
 
         <x-slot name="buttons">
             <x-button type="button" icon="fas fa-plus" color="success" click="agregar"
-            :disabled="in_array($modo, ['agregar', 'modificar', 'seleccionado'])">Agregar</x-button>
+                :disabled="in_array($modo, ['agregar', 'modificar', 'seleccionado'])">Agregar</x-button>
 
-            <x-button type="button" icon="fas fa-edit" color="primary" click="editar" :disabled="in_array($modo, ['inicio', 'modificar', 'agregar'])">Modificar</x-button>
+            <x-button type="button" icon="fas fa-edit" color="primary" click="editar"
+                :disabled="in_array($modo, ['inicio', 'modificar', 'agregar'])">Modificar</x-button>
 
-            <x-button type="button" icon="fas fa-trash" color="danger" click="confirmarEliminacion"
+            <x-button type="button" icon="fas fa-trash" color="danger" id="btn-eliminar"
                 :disabled="in_array($modo, ['agregar', 'modificar', 'inicio'])">Eliminar</x-button>
 
             <x-button type="submit" color="default" click="grabar" :disabled="in_array($modo, ['inicio', 'seleccionado'])">Grabar</x-button>
@@ -64,11 +65,30 @@
 
 @push('scripts')
     <script>
-        window.addEventListener('confirmar-eliminacion', event => {
-            if (confirm('¿Está seguro que desea eliminar este proveedor?')) {
-                @this.eliminar();
-            }
-        });
+        const btnEliminar = document.getElementById('btn-eliminar');
+        if (btnEliminar) {
+            btnEliminar.addEventListener('click', function() {
+                Swal.fire({
+                    title: "ELIMINAR",
+                    text: "¿DESEAS ELININAR EL REGISTRO SELECCIONADO?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#458E49",
+                    confirmButtonText: "SI",
+                    cancelButtonText: "NO",
+                    closeOnConfirm: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        @this.eliminar();
+                        Swal.fire({
+                            title: "Respuesta",
+                            text: "Registro Eliminado Con Exito",
+                            icon: "success"
+                        });
+                    }
+                });
+            });
+        }
     </script>
     <!-- Page specific script -->
     <script>
@@ -79,35 +99,6 @@
             });
         });
     </script>
-    {{-- <script>
-        // $(function() {
-        //     $("#proveedores-table").DataTable({
-        //         processing: true,
-        //         serverSide: true,
-        //         "ajax": "{{ route('proveedores.ajax') }}",
-        //         "columns": [
-        //         { data: "prov_razonsocial" },
-        //         { data: "prov_ruc" },
-        //         { data: "prov_direccion" },
-        //         { data: "prov_telefono" },
-        //         { data: "prov_correo" },
-        //         { data: "ciudad.ciu_descripcion" } // relación cargada con with('ciudad')
-        //         ],
-        //         "pageLength": 5,
-        //         "responsive": true,
-        //         "lengthChange": true,
-        //         "autoWidth": true,
-        //         //"dom": 'Bfrtip', // <--- AGREGADO
-        //         dom: "<'row'<'col-sm-6'B><'col-sm-6'f>>" +
-        //             "<'row'<'col-sm-12'tr>>" +
-        //             "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-        //         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-        //         "language": {
-        //             "url": "{{ asset('vendor/datatables/i18n/es.json') }}"
-        //         }
-        //     }).buttons().container().appendTo('#proveedores-table_wrapper .col-md-6:eq(0)');
-        // });
-    </script> --}}
 @endpush
 
 @push('css')

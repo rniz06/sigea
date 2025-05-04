@@ -68,7 +68,7 @@ class Index extends Component
 
     public function confirmarEliminacion()
     {
-        $this->dispatchBrowserEvent('confirmar-eliminacion');
+        $this->dispatch('confirmar-eliminacion');
     }
 
     // Reglas de validación
@@ -88,7 +88,7 @@ class Index extends Component
     {
         // Validar los datos
         $validados = $this->validate();
-        
+
         if ($this->modo === 'agregar') {
             Proveedor::create($validados);
         } elseif ($this->modo === 'modificar' && $this->proveedor_id) {

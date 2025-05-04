@@ -25,7 +25,7 @@
 
 @push('css')
     {{-- Incluir estilos adicionales desde el componente --}}
-    @stack('scripts')
+    @stack('styles')
 @endpush
 
 {{-- Push extra scripts --}}
