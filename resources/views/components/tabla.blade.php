@@ -1,6 +1,10 @@
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">{{ $titulo ?? 'Titulo' }}</h3>
+        <h3 class="card-title">{{ $titulo ?? 'Titulo' }}
+            @if (isset($excel))
+                <button class="btn btn-sm btn-outline-success" wire:click="excel"><i class="fas fa-file-excel"></i> Excel</button>
+            @endif
+        </h3>
         <div class="card-tools">
             <div class="input-group input-group-sm" style="width: 150px;">
                 <input type="text"class="form-control float-right" placeholder="Buscar..." wire:model.live="buscador">

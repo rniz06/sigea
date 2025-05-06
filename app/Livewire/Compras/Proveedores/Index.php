@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Compras\Proveedores;
 
+use App\Exports\ExcelGenericoExport;
 use Livewire\Attributes\Validate;
 use App\Models\Ciudad;
 use App\Models\Compras\Proveedor;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Index extends Component
 {
@@ -126,5 +128,13 @@ class Index extends Component
                 ->buscador($this->buscador)->orderBy('id', 'desc')->paginate($this->paginado),
             'ciudades' => Ciudad::select('id', 'ciu_descripcion')->orderBy('ciu_descripcion')->get(),
         ]);
+    }
+
+    public function excel()
+    {
+        $datos = Proveedor::select('prov_razonsocial', 'prov_ruc', 'prov_direccion', 'prov_telefono', 'prov_correo')->get();
+        $encabezados = ['Razon Social', 'Ruc', 'Dirección', 'Teléfono', 'Correo'];
+        
+        return Excel::download(new ExcelGenericoExport($datos, $encabezados), 'Proveedores.xlsx');
     }
 }

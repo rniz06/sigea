@@ -36,7 +36,7 @@
     </x-card-form>
     
     <!-- Tabla -->
-    <x-tabla titulo="Listado de Proveedores">
+    <x-tabla titulo="Listado de Proveedores" excel>
         <x-slot name="cabeceras">
             <th>Razón Social</th>
             <th>Ruc</th>
