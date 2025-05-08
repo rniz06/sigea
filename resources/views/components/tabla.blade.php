@@ -4,6 +4,9 @@
             @if (isset($excel))
                 <button class="btn btn-sm btn-outline-success" wire:click="excel"><i class="fas fa-file-excel"></i> Excel</button>
             @endif
+            @if (isset($pdf))
+                <button class="btn btn-sm btn-outline-secondary" wire:click="pdf"><i class="fas fa-file-pdf"></i> Pdf</button>
+            @endif
         </h3>
         <div class="card-tools">
             <div class="input-group input-group-sm" style="width: 150px;">

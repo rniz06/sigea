@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class Index extends Component
 {
@@ -134,7 +135,19 @@ class Index extends Component
     {
         $datos = Proveedor::select('prov_razonsocial', 'prov_ruc', 'prov_direccion', 'prov_telefono', 'prov_correo')->get();
         $encabezados = ['Razon Social', 'Ruc', 'Dirección', 'Teléfono', 'Correo'];
-        
+
         return Excel::download(new ExcelGenericoExport($datos, $encabezados), 'Proveedores.xlsx');
+    }
+
+    public function pdf()
+    {
+        $nombre_archivo = "Proveedores";
+        $datos = Proveedor::select('prov_razonsocial', 'prov_ruc', 'prov_direccion', 'prov_telefono', 'prov_correo')->get();
+        $encabezados = ['Razon Social', 'Ruc', 'Dirección', 'Teléfono', 'Correo'];
+
+        $pdf = Pdf::loadView('pdf-general', ['nombre_archivo' => $nombre_archivo, 'datos' => $datos, 'encabezados' => $encabezados]);
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, $nombre_archivo . '.pdf');
     }
 }
