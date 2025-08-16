@@ -17,7 +17,9 @@
         </div>
     @endif
 
-    @livewire('compras.proveedores.index')
+    {{-- @livewire('compras.proveedores.index') --}}
+    @livewire('compras.proveedores.form')
+    @livewire('compras.proveedores.tabla')
 
 @stop
 

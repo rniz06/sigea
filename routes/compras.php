@@ -4,7 +4,7 @@ use App\Http\Controllers\Compras\ProveedorController;
 use Illuminate\Support\Facades\Route;
 
 // Grupo de Rutas Protegidas por Autenticación
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->prefix('compras')->group(function () {
 
     /*
     |--------------------------------------------------------------------------

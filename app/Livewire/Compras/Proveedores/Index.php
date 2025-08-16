@@ -149,16 +149,4 @@ class Index extends Component
 
         return (new PdfGenericoExport($datos, $encabezados, $nombre_archivo))->download();
     }
-
-    // public function pdf()
-    // {
-    //     $nombre_archivo = "Proveedores";
-    //     $datos = VtProveedor::select('prov_razonsocial', 'prov_ruc', 'prov_direccion', 'prov_telefono', 'prov_correo', 'ciu_descripcion')->get();
-    //     $encabezados = ['Razon Social', 'Ruc', 'Dirección', 'Teléfono', 'Correo', 'Ciudad'];
-
-    //     $pdf = Pdf::loadView('pdf-general', ['nombre_archivo' => $nombre_archivo, 'datos' => $datos, 'encabezados' => $encabezados]);
-    //     return response()->streamDownload(function () use ($pdf) {
-    //         echo $pdf->stream();
-    //     }, $nombre_archivo . '.pdf');
-    // }
 }
