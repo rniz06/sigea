@@ -17,19 +17,20 @@
         </div>
     @endif
 
-    @livewire('compras.proveedores.tabla')
+    @livewire('compras.proveedores.index')
 
 @stop
 
 {{-- Push extra CSS --}}
 
 @push('css')
-    {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+    {{-- Incluir estilos adicionales desde el componente --}}
+    @stack('styles')
 @endpush
 
 {{-- Push extra scripts --}}
 
 @push('js')
-    {{-- <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script> --}}
+    {{-- Incluir scripts js adicionales desde el componente --}}
+    @stack('scripts')
 @endpush

@@ -8,6 +8,7 @@ use App\Http\Requests\Compras\Proveedor\UpdateProveedorRequest;
 use App\Models\Ciudad;
 use App\Models\Compras\Proveedor;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class ProveedorController extends Controller
 {
@@ -18,6 +19,26 @@ class ProveedorController extends Controller
     {
         return view('compras.proveedores.index');
     }
+
+    public function getProveedores(Request $request)
+    {
+        $proveedores = Proveedor::with('ciudad');
+
+        return DataTables::of($proveedores)
+            ->addColumn('ciu_descripcion', function ($row) {
+                return $row->ciudad->ciu_descripcion ?? '';
+            })
+            ->toJson();
+    }
+
+    // public function getProveedores(Request $request)
+    // {
+    //     $proveedores = Proveedor::with('ciudad')->get();
+
+    //     return response()->json([
+    //         'data' => $proveedores
+    //     ]);
+    // }
 
     /**
      * Show the form for creating a new resource.

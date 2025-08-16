@@ -3,12 +3,13 @@
 namespace App\Models\Compras;
 
 use App\Models\Ciudad;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Proveedor extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
     
     protected $table = "proveedores";
 
@@ -36,7 +37,10 @@ class Proveedor extends Model
         ->orWhere('prov_direccion', 'like', "%{$value}%")
         ->orWhere('prov_telefono', 'like', "%{$value}%")
         ->orWhere('prov_correo', 'like', "%{$value}%")
-        ->orWhere('ciudad_id', 'like', "%{$value}%");
+        // Buscar en la tabla ciudad a través de la relación
+        ->orWhereHas('ciudad', function ($query) use ($value) {
+            $query->where('ciu_descripcion', 'like', "%{$value}%");
+        });
     }
 
     public function scopeBuscadorRazonsocial($query, $value)
