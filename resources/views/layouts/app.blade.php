@@ -39,7 +39,7 @@
 
     <strong>
         <a href="{{ config('app.company_url', '#') }}" class="text-dark">
-            {{ config('app.company_name', 'Sistema POS') }}
+            {{ config('app.company_name', 'Sigea') }}
         </a>
     </strong>
 @stop
